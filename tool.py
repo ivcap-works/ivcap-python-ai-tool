@@ -1,11 +1,12 @@
 from enum import Enum
-from typing import Optional
 from fastapi import FastAPI, HTTPException
 from signal import signal, SIGTERM
 import sys
 import os
-from duckduckgo_search import DDGS
 from pydantic import BaseModel, Field
+
+from duckduckgo_search import DDGS
+
 
 # shutdown pod cracefully
 signal(SIGTERM, lambda _1, _2: sys.exit(0))
@@ -52,9 +53,9 @@ class SourceE(StrEnum):
     news = "news"
 
 class ServiceProps(BaseModel):
-    region: Optional[str] = Field(description="'wt-wt' the world", default="wt-wt")
+    region: str = Field(description="'wt-wt' the world", default="wt-wt")
     safesearch: SafeSearchE = SafeSearchE.moderate
-    timelimit: Optional[TimeLimitE] = TimeLimitE.y
+    timelimit: TimeLimitE = TimeLimitE.y
     max_results: int = 5
     source: SourceE = SourceE.text
 
@@ -75,7 +76,7 @@ def info():
         "$schema": "urn:sd.platform:schema:ai-tool.1",
         "name": "duckduckgo_search",
         "description": description,
-        "action_schema":  ActionProps.model_json_schema(),
+        "action_schema":  ActionProps.model_json_schema(by_alias=False),
         "service_schema": ServiceProps.model_json_schema(),
     }
 
