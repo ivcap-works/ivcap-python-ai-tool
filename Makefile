@@ -2,8 +2,6 @@ SERVICE_NAME=duckduckgo_search-tool
 SERVICE_TITLE=AI tool to retrieve infomation via DuckDuckGo Search
 
 SERVICE_FILE=tool.py
-SERVICE_ID:=urn:ivcap:service:$(shell python3 -c 'import uuid; print(uuid.uuid5(uuid.NAMESPACE_DNS, \
-        "${SERVICE_NAME}" + "${ivcap context get account-id}"));')
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 GIT_TAG := $(shell git describe --abbrev=0 --tags ${TAG_COMMIT} 2>/dev/null || true)
@@ -90,11 +88,17 @@ docker-publish-common:
 	@echo ">> Successfully published '${DOCKER_TAG}' as '${SERVICE_IMG}'"
 
 service-register: docker-publish
+	$(eval account_id=$(shell ivcap context get account-id))
+	@if [[ ${account_id} != urn:ivcap:account:* ]]; then echo "ERROR: No IVCAP account found"; exit -1; fi
+	$(eval service_id:=urn:ivcap:service:$(shell python3 -c 'import uuid; print(uuid.uuid5(uuid.NAMESPACE_DNS, \
+        "${SERVICE_NAME}" + "${account_id}"));'))
 	$(eval image:=$(shell ivcap package list ${DOCKER_TAG}))
+	@if [[ -z "${image}" ]]; then echo "ERROR: No uploaded docker image '${DOCKER_TAG}' found"; exit -1; fi
+	@echo "ServiceID: ${service_id}"
 	cat ${PROJECT_DIR}/service.json \
-	| sed 's|#DOCKER_TAG#|${image}|' \
-	| sed 's|#SERVICE_ID#|${SERVICE_ID}|' \
-  | ivcap aspect update ${SERVICE_ID} -f - --timeout 600
+	| sed 's|#DOCKER_IMG#|${image}|' \
+	| sed 's|#SERVICE_ID#|${service_id}|' \
+  | ivcap aspect update ${service_id} -f - --timeout 600
 
 clean:
 	rm -rf ${PROJECT_DIR}/$(shell echo ${SERVICE_FILE} | cut -d. -f1 ).dist

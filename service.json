@@ -7,7 +7,7 @@
   "policy": "urn:ivcap:policy:ivcap.base.service",
   "controller": {
     "$schema": "urn:ivcap:schema.controller.service-proxy.1",
-    "image": "#DOCKER_TAG#",
+    "image": "#DOCKER_IMG#",
     "port": 8080,
     "command": [
       "/app/run.sh"
