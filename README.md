@@ -8,9 +8,29 @@ The actual tool implemented in ths repo provides a _web search_
 capability by in turn, calling the public API provided by
 [DuckDuckGo](https://duckduck.go.com) search engine
 
+* [Use](#use)
 * [Test](#test)
 * [Build & Deploy](#build)
 * [Implementation](#implementation)
+
+## Use <a name="test"></a>
+
+Below is an example of an agent definition which uses this tool:
+```
+  ...
+  "agents": {
+    "researcher": {
+      "role": "Senior Research Analyst",
+      "goal": "Uncover cutting-edge developments in AI and data science",
+      "backstory": "You work at a leading tech think tank. Your expertise lies in identifying emerging trends. ...",
+      "tools": [
+        {
+          "id": "urn:ivcap:service:ai-tool.ddg-search",
+          "safesearch": "off"
+        }
+      ],
+      ...
+```
 
 ## Test <a name="test"></a>
 
