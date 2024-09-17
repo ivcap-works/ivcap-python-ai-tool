@@ -22,7 +22,7 @@ Below is an example of an agent definition which uses this tool:
     "researcher": {
       "role": "Senior Research Analyst",
       "goal": "Uncover cutting-edge developments in AI and data science",
-      "backstory": "You work at a leading tech think tank. Your expertise lies in identifying emerging trends. ...",
+      "backstory": "You work at a leading tech think tank. Your expertise lies in ...",
       "tools": [
         {
           "id": "urn:ivcap:service:ai-tool.ddg-search",
