@@ -1,0 +1,30 @@
+{
+  "$schema": "urn:ivcap:schema.service.2",
+  "$id": "#SERVICE_ID#",
+  "name": "is-prime-tool-batch",
+  "description": "AI tool to help determining if a number is a prime number.",
+  "parameters": [],
+  "policy": "urn:ivcap:policy:ivcap.open.service",
+  "controller-schema": "urn:ivcap:schema.service.batch.1",
+  "controller": {
+    "$schema": "urn:ivcap:schema.service.batch.1",
+    "image": "#DOCKER_IMG#",
+    "port": 80,
+    "command": [
+      "python",
+      "/app/batch_service.py"
+    ],
+    "resources": {
+      "limits": {
+        "cpu": "500m",
+        "ephemeral-storage": "1Gi",
+        "memory": "1Gi"
+      },
+      "requests": {
+        "cpu": "500m",
+        "ephemeral-storage": "1Gi",
+        "memory": "1Gi"
+      }
+    }
+  }
+}
