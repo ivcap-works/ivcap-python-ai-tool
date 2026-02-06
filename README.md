@@ -203,3 +203,7 @@ if __name__ == "__main__":
 This file contains the resource requirements for this tool. This will depend on the computational and memory
 requirements for the specific tool. If it is not provided a default will be used which is likely very similar
 to this file.
+
+- GPU support
+
+   Adding `"nvidia.com/gpu": 1` into the resources.json file, would allocate a NVIDIA-T4 GPU
